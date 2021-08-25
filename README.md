@@ -7,19 +7,16 @@
 | nickname           | string | null: false |
 | email              | string | null: false |
 | encrypted_password | string | null: false |
-| user_image         | string |             |
 | family_name        | string | null: false |
 | first_name         | string | null: false |
 | family_name_kana   | string | null: false |
 | first_name_kana    | string | null: false |
 | birth_day          | date   | null: false |
-| introduction       | text   |             |
 
 ### Association
 
-- has_many :items dependent: :destroy
-- belongs_to :bayer dependent: :destroy
-- belongs_to :card dependent: :destroy
+- has_many :items
+- has_one :bayer
 
 ## bayerテーブル
 
@@ -66,46 +63,21 @@ has_many :items
 
 ## itemテーブル
 
-| Column             | Type    | Options                        |
-| ------------------ | ------  | ------------------------------ |
-| name               | string  | null: false                    |
-| price              | string  | null: false                    |
-| description        | string  | null: false                    |
-| status             | string  | null: false                    |
-| size               | string  | null: false                    |
-| shipping_cost      | string  | null: false                    |
-| shipping_days      | string  | null: false                    |
-| prefecture_id      | string  | null: false                    |
-| judgment           | string  |                                |
-| category_id        | integer | null: false, foreign_key: true |
-| brand_id           | integer | null: false, foreign_key: true |
-| shipping_id        | integer | null: false, foreign_key: true |
-| user_id            | integer | null: false, foreign_key: true |
+| Column             | Type       | Options                        |
+| ------------------ | ---------- | ------------------------------ |
+| name               | string     | null: false                    |
+| price              | integer    | null: false                    |
+| description        | text       | null: false                    |
+| status             | integer    | null: false                    |
+| condition          | integer    | null: false                    |
+| shipping           | references | null: false, foreign_key: true |
+| judgment           | string     |                                |
+| category           | references | null: false, foreign_key: true |
+| brand              | references | null: false, foreign_key: true |
+| seller_user        | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user dependent: :destroy
 - belongs_to :category dependent: :destroy
 - belongs_to :brand dependent: :destroy
 - has_many :images dependent: :destroy
-- belongs_to_active_hash :prefecture
-
-## imageテーブル
-
-| Column             | Type    | Options                        |
-| ------------------ | ------  | ------------------------------ |
-| image              | string  | null: false                    |
-| product_id         | integer | null: false, foreign_key: true |
-
-### Association
-
-belongs_to :item
-
-## brandテーブル
-
-| Column             | Type    | Options                        |
-| ------------------ | ------  | ------------------------------ |
-| name               | string  | index: true                    |
-
-### Association
-
-- has_many :items
