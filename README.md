@@ -45,19 +45,19 @@
 ### Association
 - belongs_to :user
 - belongs_to :item
-- has_one :arrivals
+- has_one :arrival
 
 ## arrivalsテーブル
 
 | Column             | Type       | Options                                         |
 | ------------------ | ---------- | ----------------------------------------------- |
 | post_code          | string     | null: false                                     |
-| prefecture_id      | integer    | null: false                                 |
+| prefecture_id      | integer    | null: false                                     |
 | city               | string     | null: false                                     |
 | address            | string     | null: false                                     |
-| building           | string     | null: false                                     |
+| building           | string     |                                                 |
 | phone              | string     | null: false                                     |
 | order              | references | null: false,foreign_key: true                   |
 
 ### Association
-- belongs_to :item
+- belongs_to :order
