@@ -19,17 +19,17 @@
 
 ## itemsテーブル
 
-| Column             | Type   | Options                                         |
-| ------------------ | ------ | ----------------------------------------------- |
+| Column             | Type       | Options                                         |
+| ------------------ | ---------- | ----------------------------------------------- |
 | product_name       | string     | null: false                                 |
-| description        | string     | null: false                                 |
-| category           | string     | null: false                                 |
-| status             | string     | null: false                                 |
-| shipping_cost      | integer    | null: false                                 |
-| prefecture         | string     | null: false                                 |
-| shipping           | string     | null: false                                 |
+| description        | text       | null: false                                 |
+| category_id        | integer    | null: false                                 |
+| status_id          | integer    | null: false                                 |
+| shipping_cost_id   | integer    | null: false                                 |
+| prefecture_id      | integer    | null: false                                 |
+| shipping_id        | integer    | null: false                                 |
 | price              | integer    | null: false                                 |
-| user_id            | references | null: false,foreign_key: true               |
+| user               | references | null: false,foreign_key: true               |
 
 ### Association
 - belongs_to :user
@@ -39,25 +39,25 @@
 
 | Column             | Type       | Options                                         |
 | ------------------ | ---------- | ----------------------------------------------- |
-| user_id            | references | null: false,foreign_key: true                   |
-| item_id            | references | null: false,foreign_key: true                   |
+| user               | references | null: false,foreign_key: true                   |
+| item               | references | null: false,foreign_key: true                   |
 
 ### Association
 - belongs_to :user
 - belongs_to :item
-- has_one :information
+- has_one :arrivals
 
-## informationテーブル
+## arrivalsテーブル
 
 | Column             | Type       | Options                                         |
 | ------------------ | ---------- | ----------------------------------------------- |
-| post_code          | integer    | null: false                                     |
-| prefecture         | string     | null: false                                     |
+| post_code          | string     | null: false                                     |
+| prefecture_id      | integer    | null: false                                 |
 | city               | string     | null: false                                     |
 | address            | string     | null: false                                     |
 | building           | string     | null: false                                     |
-| phone              | integer    | null: false                                     |
-| order_id           | references | null: false,foreign_key: true                   |
+| phone              | string     | null: false                                     |
+| order              | references | null: false,foreign_key: true                   |
 
 ### Association
 - belongs_to :item
