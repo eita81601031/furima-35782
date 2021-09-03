@@ -29,7 +29,7 @@ RSpec.describe User, type: :model do
       another_user = FactoryBot.build(:user)
       another_user.email = @user.email
       another_user.valid?
-      expect(another_user.errors.full_messages).to include('Email has already been taken')
+      expect(another_user.errors.full_messages).to include("Email has already been taken")
     end
     it 'emailが@を含めないと登録できない' do
       @user.email = 'abcgmail.com'
@@ -57,6 +57,11 @@ RSpec.describe User, type: :model do
       @user.valid?
       expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
     end
+    it '全角文字を含むパスワードでは登録できない' do
+      @user.password = '11aaBB'
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+    end
     it 'passwordとpassword_confirmationが不一致では登録できない' do
       @user.password_confirmation = ''
       @user.valid?
@@ -81,6 +86,26 @@ RSpec.describe User, type: :model do
       @user.first_name_kana = ''
       @user.valid?
       expect(@user.errors.full_messages).to include("First name kana can't be blank")
+    end
+    it '姓（全角）に半角文字が含まれていると登録できない' do
+      @user.family_name = 'TANAKA'
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Family name 全角文字を使用してください")
+    end
+    it '名（全角）に半角文字が含まれていると登録できない' do
+      @user.first_name = 'TAKESHI'
+      @user.valid?
+      expect(@user.errors.full_messages).to include("First name 全角文字を使用してください")
+    end
+    it '姓（カナ）にカタカナ以外の文字（平仮名・漢字・英数字・記号）が含まれていると登録できない' do
+      @user.family_name_kana = '田中'
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Family name kana is invalid. Input full-width katakana characters.")
+    end
+    it '名（カナ）にカタカナ以外の文字（平仮名・漢字・英数字・記号）が含まれていると登録できない' do
+      @user.first_name_kana = '健'
+      @user.valid?
+      expect(@user.errors.full_messages).to include("First name kana is invalid. Input full-width katakana characters.")
     end
     it 'birth_dayが空では登録できない' do
       @user.birth_day = ''
