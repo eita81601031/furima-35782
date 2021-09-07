@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   
   #出品機能、購入機能で記述する
-  #has_many :items
+  has_many :items
   #has_many :orders
   with_options presence: true do
   validates :nickname
