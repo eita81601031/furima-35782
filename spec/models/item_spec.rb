@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Item, type: :model do
   before do
-    # binding.pry
     @item = FactoryBot.build(:item)
   end
 
@@ -31,28 +30,28 @@ RSpec.describe Item, type: :model do
         @item.valid?
         expect(@item.errors.full_messages).to include("Description can't be blank")
       end
-      it 'categoryが空だと登録できない' do
-        @item.category_id = nil
+      it 'categoryが「---」だと登録できない' do
+        @item.category_id = '1'
         @item.valid?
         expect(@item.errors.full_messages).to include("Category can't be blank")
       end
-      it 'statusが空だと登録できない' do
-        @item.status_id = nil
+      it 'statusが「---」だと登録できない' do
+        @item.status_id = '1'
         @item.valid?
         expect(@item.errors.full_messages).to include("Status can't be blank")
       end
-      it 'shipping_costが空だと登録できない' do
-        @item.shipping_cost_id = nil
+      it 'shipping_costが「---」だと登録できない' do
+        @item.shipping_cost_id = '1'
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping cost can't be blank")
       end
-      it 'prefectureが空だと登録できない' do
-        @item.prefecture_id = nil
+      it 'prefectureが「---」だと登録できない' do
+        @item.prefecture_id = '1'
         @item.valid?
         expect(@item.errors.full_messages).to include("Prefecture can't be blank")
       end
-      it 'shippingが空だと登録できない' do
-        @item.shipping = nil
+      it 'shippingが「---」だと登録できない' do
+        @item.shipping_id = '1'
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping can't be blank")
       end
@@ -60,6 +59,31 @@ RSpec.describe Item, type: :model do
         @item.price = nil
         @item.valid?
         expect(@item.errors.full_messages).to include("Price can't be blank")
+      end
+      it 'priceが全角数字だと登録できない' do
+        @item.price = '１２３４'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price Half-width number")
+      end
+      it 'priceが半角英数混合だと登録できない' do
+        @item.price = '11as'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price Half-width number")
+      end
+      it 'priceが半角英語だけでは登録できない' do
+        @item.price = 'price'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price Half-width number")
+      end
+      it 'priceが300円未満では登録できない' do
+        @item.price = '299'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price Out of setting range")
+      end
+      it 'priceが9,999,999円を超えると登録できない' do
+        @item.price = '10,000,000'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price Out of setting range")
       end
       it 'ユーザーが紐付いていなければ投稿できない' do
         @item.user = nil
