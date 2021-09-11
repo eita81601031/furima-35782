@@ -149,7 +149,7 @@
             <%= item.product_name %> 
           </h3>
           <div class='item-price'>
-            <span><%= item.price %>円<br><%= item.shipping_cost %></span>
+            <span><%= item.price %>円<br><%= item.shipping_cost.name %></span>
             <div class='star-btn'>
               <%= image_tag "star.png", class:"star-icon" %>
               <span class='star-count'>0</span>
@@ -177,9 +177,7 @@
         </div>
         <% end %>
       </li>
-      <%# //商品がある場合は表示されないようにしましょう %>
     <% end %>
-      <%# //商品がない場合は以下のダミー商品が表示されるようにしましょう %>
     </ul>
   </div>
   <%# /商品一覧 %>
