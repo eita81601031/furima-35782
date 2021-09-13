@@ -131,8 +131,6 @@
     <% @items.each do |item| %>
       <li class='list'>
       <%= link_to item_path(item.id), method: :get do %>
-       <%# <%商品詳細機能実装時%> 
-        <%# <%= link_to items_path(item.id), method: :get do %>
         <div class='item-image-content'>
           <%= image_tag item.image, class: "item-img" %>
           <%# 商品が売れていればsold outを表示しましょう %>
