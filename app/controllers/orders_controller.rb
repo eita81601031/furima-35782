@@ -4,8 +4,10 @@ class OrdersController < ApplicationController
   before_action :order_confirmation, only: [:index]
 
   def index
+    if current_user.id == @item.user.id
+      redirect_to root_path and return
+    end
     @order_arrivals = OrderArrivals.new
-    @item = Item.find(params[:item_id])
   end
 
   def new

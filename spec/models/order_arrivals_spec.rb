@@ -3,15 +3,22 @@ require 'rails_helper'
 RSpec.describe OrderArrivals, type: :model do
   before do
     @order_arrivals = FactoryBot.build(:order_arrivals)
+    @order_arrivals.item_id =  FactoryBot.create(:item).id
+    @order_arrivals.user_id =  FactoryBot.create(:user).id
+    sleep(1)
   end
 
 describe '購入内容確認' do
   context '商品購入がうまくいく時' do
     it '全ての値が正しく入力されていれば購入できること' do
-      @order_arrivals.valid?
+      expect(@order_arrivals).to be_valid
+    end
+    it 'building_nameが空でも保存できる' do
+      @order_arrivals.building = ''
       expect(@order_arrivals).to be_valid
     end
   end
+
   context '商品購入がうまくいかない時' do
     it 'post_codeが空だと購入できない' do
       @order_arrivals.post_code = ''
@@ -43,10 +50,25 @@ describe '購入内容確認' do
       @order_arrivals.valid?
       expect(@order_arrivals.errors.full_messages).to include("Phone can't be blank")
     end
-    it 'phone_numberが10桁では購入できない' do
-      @order_arrivals.phone = '090123456'
+    it '電話番号が12桁以上だと保存できない' do
+      @order_arrivals.phone = '090123456789'
       @order_arrivals.valid?
-      expect(@order_arrivals.errors.full_messages).to include( "Phone Out of setting range")
+      expect(@order_arrivals.errors.full_messages).to include('Phone is too long (maximum is 11 characters)')
+    end
+    it '電話番号が全角では保存できない' do
+      @order_arrivals.phone = '０９０１１１１１１１１'
+      @order_arrivals.valid?
+      expect(@order_arrivals.errors.full_messages).to include("Phone は半角数字で入力して下さい。")
+    end
+    it '電話番号にハイフンが入力されている場合は保存できない' do
+      @order_arrivals.phone = '090-1111-1111'
+      @order_arrivals.valid?
+      expect(@order_arrivals.errors.full_messages).to include( "Phone は半角数字で入力して下さい。")
+    end
+    it '電話番号に数字以外の文字が入力されている場合は保存できない' do
+      @order_arrivals.phone = 'aiueo'
+      @order_arrivals.valid?
+      expect(@order_arrivals.errors.full_messages).to include("Phone は半角数字で入力して下さい。")
     end
 
     context '内容に問題ない場合' do
@@ -61,6 +83,16 @@ describe '購入内容確認' do
         @order_arrivals.token = nil
         @order_arrivals.valid?
         expect(@order_arrivals.errors.full_messages).to include("Token can't be blank")
+      end
+      it "item_idが空では登録できないこと" do
+        @order_arrivals.item_id = ''
+        @order_arrivals.valid?
+        expect(@order_arrivals.errors.full_messages).to include("Item can't be blank")
+      end
+      it "user_idが空では登録できないこと" do
+        @order_arrivals.user_id = ''
+        @order_arrivals.valid?
+        expect(@order_arrivals.errors.full_messages).to include("User can't be blank")
       end
     end
 
