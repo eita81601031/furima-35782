@@ -6,7 +6,7 @@ class User < ApplicationRecord
   
   #出品機能、購入機能で記述する
   has_many :items
-  #has_many :orders
+  has_many :orders
   with_options presence: true do
   validates :nickname
   validates :first_name,:family_name, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: '全角文字を使用してください' }
