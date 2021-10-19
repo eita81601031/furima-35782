@@ -3,7 +3,7 @@ class OrderArrivals
   attr_accessor :post_code, :prefecture_id, :city, :address, :building, :phone, :user_id, :item_id, :token
 
  with_options presence: true do
-  #validates :phone, format: {with: /\A\d{10}\z|\A\d{11}\z/ , message: "Out of setting range"}
+  validates :phone, format: {with: /\A\d{10}\z|\A\d{11}\z/ , message: "は10桁で入力して下さい。"}
   validates :post_code, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "is invalid. Include hyphen(-)"}
   validates :prefecture_id, numericality: { other_than: 1 , message: "can't be blank"}
   validates :city

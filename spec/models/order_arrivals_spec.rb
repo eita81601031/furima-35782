@@ -55,6 +55,11 @@ describe '購入内容確認' do
       @order_arrivals.valid?
       expect(@order_arrivals.errors.full_messages).to include('Phone is too long (maximum is 11 characters)')
     end
+    it '電話番号が9桁以下では保存できない' do
+      @order_arrivals.phone = '090123456'
+      @order_arrivals.valid?
+      expect(@order_arrivals.errors.full_messages).to include('Phone は10桁で入力して下さい。')
+    end
     it '電話番号が全角では保存できない' do
       @order_arrivals.phone = '０９０１１１１１１１１'
       @order_arrivals.valid?
